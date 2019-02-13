@@ -1,0 +1,28 @@
+---
+title: "Connect Chicago Locations"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# `r format(Sys.Date(), format = "%B %d, %Y")`
+
+Connect Chicago is a loose network of more than 250 places in the city where internet and computer access, digital skills training, and online learning resources are available-for free.
+
+
+```{r map}
+library(leaflet)
+
+df <- read.csv(url("https://data.cityofchicago.org/api/views/bmus-hp7e/rows.csv"))
+df.latlong <- df[,c("Latitude", "Longitude")]
+df.name <- df[,c("ORGANIZATION.NAME")]
+
+df.latlong %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(popup = df.name, clusterOptions = markerClusterOptions())
+
+```
+
